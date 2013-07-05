@@ -1,1 +1,1 @@
-v0.0.1, 2013-07-05 -- Initial release.
+v0.0.3, 2013-07-05 -- First release with reasonable documentation.
