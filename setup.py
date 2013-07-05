@@ -14,7 +14,7 @@ setup(
                  ' configure and run an embedded, in-memory LDAP server. Uses'
                  ' UnboundID LDAP SDK through Py4J.'),
     keywords = ['testing', 'tests', 'test', 'ldap'],
-    long_description=open('README.txt').read(),
+    long_description=open('README.md').read(),
     install_requires=[
         "py4j >= 0.8",
     ],
