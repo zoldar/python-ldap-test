@@ -1,0 +1,3 @@
+[submodule "ldap-test-server-py4j"]
+	path = ldap-test-server-py4j
+	url = git@github.com:zoldar/ldap-test-server-py4j.git
