@@ -10,7 +10,7 @@ except:
 
 setup(
     name='python-ldap-test',
-    version='0.0.6',
+    version='0.0.7',
     author='Adrian Gruntkowski',
     author_email='adrian.gruntkowski@gmail.com',
     packages=['ldap_test', 'ldap_test.test'],

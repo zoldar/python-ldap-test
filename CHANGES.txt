@@ -1,1 +1,1 @@
-v0.0.6, 2013-07-05 -- First release with reasonable documentation.
+v0.0.7, 2013-07-05 -- First release with reasonable documentation.
