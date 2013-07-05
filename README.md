@@ -2,10 +2,13 @@
 
 Tool for testing code speaking with LDAP. Allows to easily configure and run 
 an embedded, in-memory LDAP server. Uses UnboundID LDAP SDK through Py4J.
+Requires Java runtime on the system path to run the server.
 
 ## Usage
 
 Example library usage with Python ldap client.
+
+    from ldap_test import LdapServer
 
     server = LdapServer()
 
@@ -28,6 +31,8 @@ Example library usage with Python ldap client.
         server.stop()
 
 Another example with non-standard settings:
+
+    from ldap_test import LdapServer
 
     server = LdapServer({
         'port': 3333,
