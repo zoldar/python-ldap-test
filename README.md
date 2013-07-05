@@ -4,6 +4,19 @@ Tool for testing code speaking with LDAP. Allows to easily configure and run
 an embedded, in-memory LDAP server. Uses UnboundID LDAP SDK through Py4J.
 Requires Java runtime on the system path to run the server.
 
+## Installation
+
+With `pip`:
+
+    pip install python-ldap-test
+
+
+When installing from source:
+
+    git clone https://github.com/zoldar/python-ldap-test
+    cd python-ldap-test
+    python setup.py install # you may need root privileges if installing system-wide
+
 ## Usage
 
 Example library usage with Python ldap client.

@@ -1,17 +1,16 @@
 from distutils.core import setup
 from setuptools.command.install import install
 
-import pandoc
 
-pandoc.core.PANDOC_PATH = '/usr/bin/pandoc'
-
-doc = pandoc.Document()
-doc.markdown = open('README.md').read()
+try:
+    description = open('README.txt').read()
+except:
+    description = open('README.md').read()
 
 
 setup(
     name='python-ldap-test',
-    version='0.0.3',
+    version='0.0.6',
     author='Adrian Gruntkowski',
     author_email='adrian.gruntkowski@gmail.com',
     packages=['ldap_test', 'ldap_test.test'],
@@ -21,7 +20,7 @@ setup(
                  ' configure and run an embedded, in-memory LDAP server. Uses'
                  ' UnboundID LDAP SDK through Py4J.'),
     keywords = ['testing', 'tests', 'test', 'ldap'],
-    long_description=doc.rst,
+    long_description=description,
     install_requires=[
         "py4j >= 0.8",
     ],
