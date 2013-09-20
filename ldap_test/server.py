@@ -24,7 +24,7 @@ DEFAULT_CONFIG = {
 PACKAGE_DIR = os.path.dirname(os.path.abspath(__file__))
 JVM_SERVER_BIN = os.path.join(
     PACKAGE_DIR,
-    "ldap-test-server-0.0.1-SNAPSHOT-jar-with-dependencies.jar")
+    "ldap-test-server-0.0.2-SNAPSHOT-jar-with-dependencies.jar")
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger('ldap_test')
@@ -125,7 +125,7 @@ class ConfigBuilder(object):
     def _set_ldifs(self, config, ldifs):
         config.ldifs(self._list_to_array(
             self.gateway.jvm.com.github.trevershick.test.ldap.annotations.Ldif,
-            [self.builder(x) for x in ldifs]
+            [self.builder.ldif(x) for x in ldifs]
         ))
 
     def _set_bind_dn(self, config, bind_dn):
