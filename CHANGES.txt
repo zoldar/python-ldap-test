@@ -1,1 +1,2 @@
+v0.0.8, 2013-09-20 -- Fixed grave issue while loading ldifs. Disabled schema validation.
 v0.0.7, 2013-07-05 -- First release with reasonable documentation.
