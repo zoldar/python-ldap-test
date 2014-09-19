@@ -1,4 +1,5 @@
 /build
 /dist
 /python_ldap_test.egg-info
+/.tox
 *.pyc
