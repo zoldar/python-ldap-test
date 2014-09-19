@@ -4,7 +4,6 @@ import logging
 import os
 import subprocess
 import atexit
-import sys
 from distutils.spawn import find_executable
 
 from py4j.java_gateway import JavaGateway, GatewayClient, GatewayConnection
