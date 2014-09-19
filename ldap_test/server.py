@@ -4,11 +4,15 @@ import logging
 import os
 import subprocess
 import atexit
-import sys
 from distutils.spawn import find_executable
 
 from py4j.java_gateway import JavaGateway, GatewayClient, GatewayConnection
 from py4j.protocol import Py4JNetworkError
+
+try:
+    basestring
+except NameError:
+    basestring = (str, bytes)
 
 
 CONFIG_PARAMS = ('port', 'base', 'entries', 'ldifs', 'bind_dn', 'password')
@@ -60,7 +64,7 @@ def run_jvm_server():
         return subprocess.Popen("exec %s -jar %s" % (
             find_executable("java"),
             JVM_SERVER_BIN), shell=True)
-    except OSError, e:
+    except OSError as e:
         log.error("Failed to run JVM server because: %s" % (e,))
         raise
 

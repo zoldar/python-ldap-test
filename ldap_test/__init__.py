@@ -1,3 +1,3 @@
-from server import LdapServer
+from .server import LdapServer
 
 VERSION = "0.0.8"
