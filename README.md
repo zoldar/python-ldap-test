@@ -111,8 +111,12 @@ The format of entry in `entries` as well as `base` is following:
 
 Any issues (be it bugs, feature requests or anything else) can be reported through project's [GitHub issues page](https://github.com/zoldar/python-ldap-test/issues).
 
+## Contributors
+
+John Kristensen ([https://github.com/jerrykan](https://github.com/jerrykan))
+
 ## License
 
-Copyright © 2013 Adrian Gruntkowski
+Copyright © 2014 Adrian Gruntkowski
 
 Distributed under the MIT License.
