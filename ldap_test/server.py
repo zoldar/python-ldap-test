@@ -182,14 +182,13 @@ class LdapServer(object):
         if JVM_GATEWAY is None:
             JVM_GATEWAY = run_jvm_gateway()
 
-        self.gateway = JVM_GATEWAY
-        self.server = self.gateway.entry_point
-        self.config, self.config_obj = ConfigBuilder(
-            self.gateway
-        ).build_from(config)
+        self.server = JVM_GATEWAY.entry_point
+        self.config, self._config_obj = \
+            ConfigBuilder(JVM_GATEWAY).build_from(config)
+        self.server_id = self.server.create(self._config_obj)
 
     def start(self):
-        self.server.start(self.config_obj)
+        self.server.start(self.server_id)
 
     def stop(self):
-        self.server.stop()
+        self.server.stop(self.server_id)
