@@ -21,6 +21,8 @@ When installing from source:
 
 Example library usage with Python ldap client.
 
+    import ldap3
+
     from ldap_test import LdapServer
 
     server = LdapServer()
@@ -31,19 +33,28 @@ Example library usage with Python ldap client.
         dn = server.config['bind_dn']
         pw = server.config['password']
 
-        con = ldap.initialize('ldap://localhost:%s' % (server.config['port'],))
-        con.simple_bind_s(dn, pw)
+        srv = ldap3.Server('localhost', port=server.config['port'])
+        conn = ldap3.Connection(srv, user=dn, password=pw, auto_bind=True)
 
         base_dn = server.config['base']['dn']
-        filter = '(objectclass=domain)'
+        search_filter = '(objectclass=domain)'
         attrs = ['dc']
 
-        print con.search_s(base_dn, ldap.SCOPE_SUBTREE, filter, attrs)
+        conn.search(base_dn, search_filter, attributes=attrs)
 
+        print conn.response
+	# [{
+        #    'dn': 'dc=example,dc=com',
+        #    'raw_attributes': {'dc': [b'example']},
+        #    'attributes': {'dc': ['example']},
+        #    'type': 'searchResEntry'
+        # }]
     finally:
         server.stop()
 
 Another example with non-standard settings:
+
+    import ldap3
 
     from ldap_test import LdapServer
 
@@ -70,19 +81,94 @@ Another example with non-standard settings:
         dn = "cn=admin,dc=zoldar,dc=net"
         pw = "pass1"
 
-        con = ldap.initialize('ldap://localhost:3333')
-        con.simple_bind_s(dn, pw)
+        srv = ldap3.Server('localhost', port=3333)
+        conn = ldap3.Connection(srv, user=dn, password=pw, auto_bind=True)
 
         base_dn = 'dc=zoldar,dc=net'
-        filter = '(objectclass=domain)'
+        search_filter = '(objectclass=organization)'
         attrs = ['o']
 
-        print con.search_s(base_dn, ldap.SCOPE_SUBTREE, filter, attrs)
+        conn.search(base_dn, search_filter, attributes=attrs)
 
+        print conn.response
+        # [{
+        #    'dn': 'o=foocompany,dc=users,dc=zoldar,dc=net',
+        #    'raw_attributes': {'o': [b'foocompany']},
+        #    'attributes': {'o': ['foocompany']},
+        #    'type': 'searchResEntry'
+        # }]
     finally:
         server.stop()
 
-The server initial configuration is represented by a simple dict, which may
+And, finally, an example of running multiple LDAP servers:
+
+    import ldap3
+
+    from ldap_test import LdapServer
+
+    servers = {}
+
+    try:
+        for sid in (1, 2):
+            domain = 'example{0}'.format(sid)
+            servers[sid] = LdapServer({
+                'port': 10389 + (sid * 1000),
+                'bind_dn': 'cn=admin,dc={0},dc=com'.format(domain),
+                'base': {
+                    'objectclass': ['domain'],
+                    'dn': 'dc={0},dc=com'.format(domain),
+                    'attributes': {'dc': domain}
+                },
+            })
+            servers[sid].start()
+
+        search_filter = '(objectclass=domain)'
+        attrs = ['dc']
+
+        # server1
+        dn = servers[1].config['bind_dn']
+        pw = servers[1].config['password']
+        base_dn = servers[1].config['base']['dn']
+        port = servers[1].config['port']
+
+        srv = ldap3.Server('localhost', port=port)
+        conn = ldap3.Connection(srv, user=dn, password=pw, auto_bind=True)
+        conn.search(base_dn, search_filter, attributes=attrs)
+
+        print conn.response
+        # [{
+        #    'dn': 'dc=example1,dc=com',
+        #    'raw_attributes': {'dc': [b'example1']},
+        #    'attributes': {'dc': ['example1']},
+        #    'type': 'searchResEntry'
+        # }]
+
+        conn.unbind()
+
+        # server2
+        dn = servers[2].config['bind_dn']
+        pw = servers[2].config['password']
+        base_dn = servers[2].config['base']['dn']
+        port = servers[2].config['port']
+
+        srv = ldap3.Server('localhost', port=port)
+        conn = ldap3.Connection(srv, user=dn, password=pw, auto_bind=True)
+        conn.search(base_dn, search_filter, attributes=attrs)
+
+        print conn.response
+        # [{
+        #    'dn': 'dc=example2,dc=com',
+        #    'raw_attributes': {'dc': [b'example2']},
+        #    'attributes': {'dc': ['example2']},
+        #    'type': 'searchResEntry'
+        # }]
+
+        conn.unbind()
+    finally:
+        for server in servers.values():
+            server.stop()
+
+The initial server configuration is represented by a simple dict, which may
 contain one or more optional parameters:
 
 - `port` - a port on which the LDAP server will listen
