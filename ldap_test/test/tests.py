@@ -21,10 +21,10 @@ class LdapServerTest(unittest.TestCase):
         conn = ldap3.Connection(srv, user=dn, password=pw, auto_bind=True)
 
         base_dn = server.config['base']['dn']
-        filter = '(objectclass=domain)'
+        search_filter = '(objectclass=domain)'
         attrs = ['dc']
 
-        conn.search(base_dn, filter, attributes=attrs)
+        conn.search(base_dn, search_filter, attributes=attrs)
 
         self.assertEqual(conn.response, [{
             'dn': 'dc=example,dc=com',
@@ -64,10 +64,10 @@ class LdapServerTest(unittest.TestCase):
         conn = ldap3.Connection(srv, user=dn, password=pw, auto_bind=True)
 
         base_dn = 'dc=zoldar,dc=net'
-        filter = '(objectclass=organization)'
+        search_filter = '(objectclass=organization)'
         attrs = ['o']
 
-        conn.search(base_dn, filter, attributes=attrs)
+        conn.search(base_dn, search_filter, attributes=attrs)
 
         self.assertEqual(conn.response, [{
             'dn': 'o=foocompany,dc=users,dc=zoldar,dc=net',
@@ -77,6 +77,66 @@ class LdapServerTest(unittest.TestCase):
         }])
 
         server.stop()
+
+    def test_multiple_instances(self):
+        servers = {}
+        for sid in (1, 2):
+            domain = 'example{0}'.format(sid)
+            servers[sid] = LdapServer({
+                'port': 10389 + (sid * 1000),
+                'bind_dn': 'cn=admin,dc={0},dc=com'.format(domain),
+                'base': {
+                    'objectclass': ['domain'],
+                    'dn': 'dc={0},dc=com'.format(domain),
+                    'attributes': {'dc': domain}
+                },
+            })
+            servers[sid].start()
+
+        search_filter = '(objectclass=domain)'
+        attrs = ['dc']
+
+        # server1
+        dn = servers[1].config['bind_dn']
+        pw = servers[1].config['password']
+        base_dn = servers[1].config['base']['dn']
+        port = servers[1].config['port']
+
+        srv = ldap3.Server('localhost', port=port)
+        conn = ldap3.Connection(srv, user=dn, password=pw, auto_bind=True)
+        conn.search(base_dn, search_filter, attributes=attrs)
+
+        self.assertEqual(conn.response, [{
+            'dn': 'dc=example1,dc=com',
+            'raw_attributes': {'dc': [b'example1']},
+            'attributes': {'dc': ['example1']},
+            'type': 'searchResEntry'
+        }])
+
+        conn.unbind()
+
+        # server2
+        dn = servers[2].config['bind_dn']
+        pw = servers[2].config['password']
+        base_dn = servers[2].config['base']['dn']
+        port = servers[2].config['port']
+
+        srv = ldap3.Server('localhost', port=port)
+        conn = ldap3.Connection(srv, user=dn, password=pw, auto_bind=True)
+        conn.search(base_dn, search_filter, attributes=attrs)
+
+        self.assertEqual(conn.response, [{
+            'dn': 'dc=example2,dc=com',
+            'raw_attributes': {'dc': [b'example2']},
+            'attributes': {'dc': ['example2']},
+            'type': 'searchResEntry'
+        }])
+
+        conn.unbind()
+
+        for server in servers.values():
+            server.stop()
+
 
 if __name__ == '__main__':
     unittest.main()
