@@ -21,10 +21,10 @@ class LdapServerTest(unittest.TestCase):
         conn = ldap3.Connection(srv, user=dn, password=pw, auto_bind=True)
 
         base_dn = server.config['base']['dn']
-        filter = '(objectclass=domain)'
+        search_filter = '(objectclass=domain)'
         attrs = ['dc']
 
-        conn.search(base_dn, filter, attributes=attrs)
+        conn.search(base_dn, search_filter, attributes=attrs)
 
         self.assertEqual(conn.response, [{
             'dn': 'dc=example,dc=com',
@@ -64,10 +64,10 @@ class LdapServerTest(unittest.TestCase):
         conn = ldap3.Connection(srv, user=dn, password=pw, auto_bind=True)
 
         base_dn = 'dc=zoldar,dc=net'
-        filter = '(objectclass=organization)'
+        search_filter = '(objectclass=organization)'
         attrs = ['o']
 
-        conn.search(base_dn, filter, attributes=attrs)
+        conn.search(base_dn, search_filter, attributes=attrs)
 
         self.assertEqual(conn.response, [{
             'dn': 'o=foocompany,dc=users,dc=zoldar,dc=net',
