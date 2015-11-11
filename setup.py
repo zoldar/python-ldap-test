@@ -27,5 +27,18 @@ setup(
     package_data={
         '': ['*.txt'],
         'ldap_test': ['*.jar'],
-    }
+    },
+    options={
+        'bdist_rpm': {
+            'build_requires':[
+                'python',
+                'python-setuptools',
+                'py4j',
+            ],
+            'requires':[
+                'python',
+                'py4j',
+            ],
+        },
+    },
 )
