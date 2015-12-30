@@ -60,9 +60,14 @@ def run_jvm_server():
     if not os.path.isfile(JVM_SERVER_BIN):
         raise Exception("%s is missing!" % (JVM_SERVER_BIN,))
 
+    jre_executable = find_executable("java")
+
+    if jre_executable is None:
+        raise Exception("'java' executable not found in system path!")
+
     try:
         return subprocess.Popen("exec %s -jar %s" % (
-            find_executable("java"),
+            jre_executable,
             JVM_SERVER_BIN), shell=True)
     except OSError as e:
         log.error("Failed to run JVM server because: %s" % (e,))
