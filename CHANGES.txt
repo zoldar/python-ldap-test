@@ -1,3 +1,4 @@
+v0.2.1, 2015-12-30 -- More informative error on missing java executable
 v0.2.0, 2014-09-23 -- Support for running multiple LDAP servers
 v0.1.1, 2014-09-19 -- Compatibility with Python3
 v0.0.8, 2013-09-20 -- Fixed grave issue while loading ldifs. Disabled schema validation.

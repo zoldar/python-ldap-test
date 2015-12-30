@@ -43,7 +43,7 @@ Example library usage with Python ldap client.
         conn.search(base_dn, search_filter, attributes=attrs)
 
         print conn.response
-	# [{
+        # [{
         #    'dn': 'dc=example,dc=com',
         #    'raw_attributes': {'dc': [b'example']},
         #    'attributes': {'dc': ['example']},
@@ -203,6 +203,6 @@ John Kristensen ([https://github.com/jerrykan](https://github.com/jerrykan))
 
 ## License
 
-Copyright © 2014 Adrian Gruntkowski
+Copyright © 2015 Adrian Gruntkowski
 
 Distributed under the MIT License.
