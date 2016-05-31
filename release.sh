@@ -13,4 +13,6 @@ fi
 
 /usr/bin/python setup.py register -r $PYPI
 
+/usr/bin/python setup.py sdist upload -r $PYPI
+
 /bin/rm README.txt
