@@ -6,7 +6,7 @@ import subprocess
 import atexit
 from distutils.spawn import find_executable
 
-from py4j.java_gateway import JavaGateway, GatewayClient, GatewayConnection
+from py4j.java_gateway import JavaGateway, GatewayClient, GatewayConnection, GatewayParameters
 from py4j.protocol import Py4JNetworkError
 
 try:
@@ -76,8 +76,8 @@ def run_jvm_server():
 
 class SlowGatewayClient(GatewayClient):
     def _create_connection(self):
-        connection = MuffledGatewayConnection(self.address, self.port,
-                            self.auto_close, self.gateway_property)
+        parameters = GatewayParameters(address=self.address, port=self.port, auto_close=self.auto_close)
+        connection = MuffledGatewayConnection(parameters, self.gateway_property)
         while True:
             connection_success = False
             try:

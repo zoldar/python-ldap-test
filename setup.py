@@ -22,7 +22,7 @@ setup(
     keywords = ['testing', 'tests', 'test', 'ldap'],
     long_description=description,
     install_requires=[
-        "py4j >= 0.8",
+        "py4j >= 0.10.2.1",
     ],
     package_data={
         '': ['*.txt'],
