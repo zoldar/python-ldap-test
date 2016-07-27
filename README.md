@@ -200,9 +200,10 @@ Any issues (be it bugs, feature requests or anything else) can be reported throu
 ## Contributors
 
 John Kristensen ([https://github.com/jerrykan](https://github.com/jerrykan))
+Pedro Algarvio ([https://github.com/s0undt3ch](https://github.com/s0undt3ch))
 
 ## License
 
-Copyright © 2015 Adrian Gruntkowski
+Copyright © 2016 Adrian Gruntkowski
 
 Distributed under the MIT License.
