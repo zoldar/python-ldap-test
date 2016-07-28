@@ -78,6 +78,49 @@ class LdapServerTest(unittest.TestCase):
 
         server.stop()
 
+    def test_non_standard_objects(self):
+        server = LdapServer({
+            'port': 3333,
+            'bind_dn': 'cn=admin,dc=zoldar,dc=net',
+            'password': 'pass1',
+            'base': {
+                'objectclass': ['domain'],
+                'dn': 'dc=zoldar,dc=net',
+                'attributes': {'dc': 'zoldar'}
+            },
+            'entries': [{
+                'objectclass': ['domain'],
+                'dn': 'dc=users,dc=zoldar,dc=net',
+                'attributes': {'dc': 'users'}
+            }, {
+                'objectclass': ['foo'],
+                'dn': 'bar=foovar,dc=users,dc=zoldar,dc=net',
+                'attributes': {'bar': 'foovar'}
+            }],
+        })
+        server.start()
+
+        dn = "cn=admin,dc=zoldar,dc=net"
+        pw = "pass1"
+
+        srv = ldap3.Server('localhost', port=3333)
+        conn = ldap3.Connection(srv, user=dn, password=pw, auto_bind=True)
+
+        base_dn = 'dc=zoldar,dc=net'
+        search_filter = '(objectclass=foo)'
+        attrs = ['bar']
+
+        conn.search(base_dn, search_filter, attributes=attrs)
+
+        self.assertEqual(conn.response, [{
+            'dn': 'bar=foovar,dc=users,dc=zoldar,dc=net',
+            'raw_attributes': {'bar': [b'foovar']},
+            'attributes': {'bar': ['foovar']},
+            'type': 'searchResEntry'
+        }])
+
+        server.stop()
+
     def test_multiple_instances(self):
         servers = {}
         for sid in (1, 2):
