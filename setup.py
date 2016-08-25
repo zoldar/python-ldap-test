@@ -1,11 +1,18 @@
+import codecs
 from distutils.core import setup
-from setuptools.command.install import install
 
+
+def read(fname):
+    '''
+    Read a file from the directory where setup.py resides
+    '''
+    with codecs.open(fname, encoding='utf-8') as rfh:
+        return rfh.read()
 
 try:
-    description = open('README.txt').read()
+    description = read('README.txt')
 except:
-    description = open('README.md').read()
+    description = read('README.md')
 
 
 setup(
@@ -19,7 +26,7 @@ setup(
     description=('Tool for testing code speaking with LDAP server. Allows to easily'
                  ' configure and run an embedded, in-memory LDAP server. Uses'
                  ' UnboundID LDAP SDK through Py4J.'),
-    keywords = ['testing', 'tests', 'test', 'ldap'],
+    keywords=['testing', 'tests', 'test', 'ldap'],
     long_description=description,
     install_requires=[
         "py4j >= 0.10.2.1",
