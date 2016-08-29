@@ -2,6 +2,7 @@
 
 import logging
 import os
+import time
 import subprocess
 import atexit
 from distutils.spawn import find_executable
@@ -96,17 +97,18 @@ class SlowGatewayClient(GatewayClient):
                 pass
             if connection_success:
                 break
+            time.sleep(0.1)
         return connection
 
 
 class MuffledGatewayConnection(GatewayConnection):
     def start(self):
         try:
-            log.info('%s is trying to connect to %s:%d', self.__class__.__name__, self.address, self.port)
+            log.debug('%s is trying to connect to %s:%d', self.__class__.__name__, self.address, self.port)
             self.socket.connect((self.address, self.port))
             self.is_connected = True
             self.stream = self.socket.makefile('rb', 0)
-            log.info('%s is now connected to the Java server', self.__class__.__name__)
+            log.debug('%s is now connected to the Java server', self.__class__.__name__)
         except Exception:
             msg = 'An error occurred while trying to connect to the Java '\
                             'server'
