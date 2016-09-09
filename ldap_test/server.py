@@ -95,6 +95,8 @@ class SlowGatewayClient(GatewayClient):
                 connection_success = True
             except Py4JNetworkError:
                 pass
+            except (KeyboardInterrupt, SystemExit):
+                break
             if connection_success:
                 break
             time.sleep(0.1)
