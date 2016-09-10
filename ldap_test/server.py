@@ -31,7 +31,7 @@ DEFAULT_PYTHON_PROXY_PORT = 25334
 PACKAGE_DIR = os.path.dirname(os.path.abspath(__file__))
 JVM_SERVER_BIN = os.path.join(
     PACKAGE_DIR,
-    "ldap-test-server-0.0.3-SNAPSHOT-jar-with-dependencies.jar")
+    "ldap-test-server-0.0.4-SNAPSHOT-jar-with-dependencies.jar")
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger('ldap_test')
