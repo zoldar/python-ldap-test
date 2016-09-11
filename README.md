@@ -193,6 +193,18 @@ The format of entry in `entries` as well as `base` is following:
      }
     }
 
+## Running Java gateway and proxy on non-standard ports
+
+When there's a necessity to run proxy and gateway on ports different from the default ones
+(25333 for Java gateway and 25334 for proxy), the `LdapServer` may be instantiated with
+custom ones, passed explicitly to the constructor:
+
+```
+server = LdapServer({...}, java_gateway_port=26333, python_proxy_port=26334)
+```
+
+This can be useful when several test runs are done in parallel on a single system.
+
 ## Reporting issues
 
 Any issues (be it bugs, feature requests or anything else) can be reported through project's [GitHub issues page](https://github.com/zoldar/python-ldap-test/issues).
