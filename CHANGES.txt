@@ -1,3 +1,4 @@
+v0.3.0, 2016-09-11 -- Support for configuring custom ports for gateway and proxy
 v0.2.2, 2016-07-27 -- Update py4j to make library work with recent python versions
 v0.2.1, 2015-12-30 -- More informative error on missing java executable
 v0.2.0, 2014-09-23 -- Support for running multiple LDAP servers
