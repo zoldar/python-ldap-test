@@ -33,6 +33,7 @@ class LdapServerTest(unittest.TestCase):
             'type': 'searchResEntry'
         }])
 
+        conn.unbind()
         server.stop()
 
     def test_config(self):
@@ -76,6 +77,7 @@ class LdapServerTest(unittest.TestCase):
             'type': 'searchResEntry'
         }])
 
+        conn.unbind()
         server.stop()
 
     def test_non_standard_objects(self):
@@ -119,6 +121,7 @@ class LdapServerTest(unittest.TestCase):
             'type': 'searchResEntry'
         }])
 
+        conn.unbind()
         server.stop()
 
     def test_multiple_instances(self):
