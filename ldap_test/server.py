@@ -83,12 +83,12 @@ def run_jvm_server(gateway_port=DEFAULT_GATEWAY_PORT):
 
 class SlowGatewayClient(GatewayClient):
     def _create_connection(self):
-        parameters = GatewayParameters(address=self.address,
-                                       port=self.port,
-                                       auto_close=self.auto_close,
-                                       eager_load=True)
-        connection = MuffledGatewayConnection(parameters, self.gateway_property)
         while True:
+            parameters = GatewayParameters(address=self.address,
+                                           port=self.port,
+                                           auto_close=self.auto_close,
+                                           eager_load=True)
+            connection = MuffledGatewayConnection(parameters, self.gateway_property)
             connection_success = False
             try:
                 connection.start()
