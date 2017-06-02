@@ -227,7 +227,7 @@ Any issues (be it bugs, feature requests or anything else) can be reported throu
 - John Kristensen ([https://github.com/jerrykan](https://github.com/jerrykan))
 - Kevin Rasmussen ([https://github.com/krasmussen](https://github.com/krasmussen))
 - Pedro Algarvio ([https://github.com/s0undt3ch](https://github.com/s0undt3ch))
-- Nik Ogura ([https://github.com/nikogura])(https://github.com/nikogura)
+- Nik Ogura ([https://github.com/nikogura](https://github.com/nikogura))
 
 ## License
 
