@@ -192,6 +192,19 @@ The format of entry in `entries` as well as `base` is following:
                             # 'ou': ['Value1', 'Value2', ...]
      }
     }
+    
+## MacOS
+For some reason, while running on MacOS, you can experience problems if the JVM doesn't start quickly enough for the py4j gateway to connect, and it goes into an infinite hang.
+
+If you're experiencing this problem, you can set an interval between the JVM startup and the py4j gateway by passing 'java_delay=n' to LdapServer() where 'n' is the number of seconds to wait.  Typically a wait of even 1 second is enough for java to spin up and be ready for the gateway.
+
+To be clear, the following:
+
+    server = LdapServer(config={...}, java_delay=1)
+    
+will cause a 1 second delay between starting the JVM and creating the py4j gateway, and all should be well.  
+
+In tests, a delay of even 0.5 seconds can be enough, though 0.1 seconds is not.  The exact cause of this problem is unknown.  More information on this 'feature' while running on a Mac is welcome.
 
 ## Running Java gateway and proxy on non-standard ports
 
@@ -214,6 +227,7 @@ Any issues (be it bugs, feature requests or anything else) can be reported throu
 - John Kristensen ([https://github.com/jerrykan](https://github.com/jerrykan))
 - Kevin Rasmussen ([https://github.com/krasmussen](https://github.com/krasmussen))
 - Pedro Algarvio ([https://github.com/s0undt3ch](https://github.com/s0undt3ch))
+- Nik Ogura ([https://github.com/nikogura])(https://github.com/nikogura)
 
 ## License
 

@@ -195,11 +195,16 @@ class ConfigBuilder(object):
 class LdapServer(object):
     def __init__(self, config=None,
                  java_gateway_port=DEFAULT_GATEWAY_PORT,
-                 python_proxy_port=DEFAULT_PYTHON_PROXY_PORT):
+                 python_proxy_port=DEFAULT_PYTHON_PROXY_PORT, java_delay=None):
         global SERVER_PROCESS, JVM_GATEWAY
 
         if SERVER_PROCESS is None:
             SERVER_PROCESS = run_jvm_server(java_gateway_port)
+
+        # Added to introduce a delay between starting the SERVER_PROCESS and the JVM_GATEWAY if desired.
+        # This seems to be a problem on some MacOS systems, and without it you end up with an infinite hang.
+        if java_delay:
+            time.sleep(java_delay)
 
         if JVM_GATEWAY is None:
             JVM_GATEWAY = run_jvm_gateway(java_gateway_port, python_proxy_port)

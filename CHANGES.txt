@@ -1,3 +1,4 @@
+v0.3.1, 2017-05-19 -- Introduced optional delay between JVM and py4j gateway start to solve issue # 14
 v0.3.0, 2016-09-11 -- Support for configuring custom ports for gateway and proxy
 v0.2.2, 2016-07-27 -- Update py4j to make library work with recent python versions
 v0.2.1, 2015-12-30 -- More informative error on missing java executable

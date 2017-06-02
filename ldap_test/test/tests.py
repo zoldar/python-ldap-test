@@ -36,6 +36,32 @@ class LdapServerTest(unittest.TestCase):
         conn.unbind()
         server.stop()
 
+    def test_default_with_delay(self):
+        server = LdapServer(java_delay=1)
+        server.start()
+
+        dn = server.config['bind_dn']
+        pw = server.config['password']
+
+        srv = ldap3.Server('localhost', port=server.config['port'])
+        conn = ldap3.Connection(srv, user=dn, password=pw, auto_bind=True)
+
+        base_dn = server.config['base']['dn']
+        search_filter = '(objectclass=domain)'
+        attrs = ['dc']
+
+        conn.search(base_dn, search_filter, attributes=attrs)
+
+        self.assertEqual(conn.response, [{
+            'dn': 'dc=example,dc=com',
+            'raw_attributes': {'dc': [b'example']},
+            'attributes': {'dc': ['example']},
+            'type': 'searchResEntry'
+        }])
+
+        conn.unbind()
+        server.stop()
+
     def test_config(self):
         server = LdapServer({
             'port': 3333,
